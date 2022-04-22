@@ -1,9 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import Home from './components/home'
-import ReportOverview from './components/reportOverview';
+import Home from './components/Home/home'
+import ReportOverview from './components/ReportOverview/reportOverview';
+import Sandbox from './components/sandbox';
 
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import * as eva from '@eva-design/eva';
@@ -17,8 +18,18 @@ import {  Poppins_400Regular, useFonts } from '@expo-google-fonts/poppins'
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const strictTheme = { ['text-font-family']: 'Poppins_400Regular' }; // <-- Your Font
+  const strictTheme = { 
+    ['text-font-family']: 'Poppins_400Regular'
+  }; // <-- Your Font
   const customMapping = { strict: strictTheme };
+
+  const themeForNavigator = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      backgroundColor: 'red'
+    },
+  };
 
   /* FONTS LOADING */
   let [fontsLoaded, error] = useFonts({
@@ -35,10 +46,22 @@ export default function App() {
       <>
           <IconRegistry icons={EvaIconsPack} />
           <ApplicationProvider {...eva} theme={eva.light}  customMapping={customMapping}>
-            <NavigationContainer>
-              <Stack.Navigator initialRouteName="Home">
+            <NavigationContainer theme={themeForNavigator} >
+              <Stack.Navigator initialRouteName="Home"
+                  
+                  screenOptions={{
+                    headerTransparent: true,
+                    headerTitleAlign: 'center',
+                    contentStyle: {
+                      backgroundColor: '#FFFFFF'
+                    }
+                  }}
+                  >
+
                   <Stack.Screen name="Home" component={Home} />
                   <Stack.Screen name="ReportOverview" component={ReportOverview} />
+                  <Stack.Screen name="Sandbox" component={Sandbox} />
+
               </Stack.Navigator>
           </NavigationContainer>
           </ApplicationProvider>

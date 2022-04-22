@@ -39,9 +39,9 @@ export default function Graph(props){
                 datasets: [
                     {
                         data: [
-                            props.data.incomes,
-                            props.data.expenses, 
-                            props.data.profit
+                            props.data.total_incomes,
+                            props.data.total_expenses, 
+                            props.data.total_profits
 
                         ]
                     }

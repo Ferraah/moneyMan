@@ -1,39 +1,55 @@
 import React from "react";
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Divider, List, ListItem, Text, Icon} from '@ui-kitten/components';
 
 import {splitDailyData} from './dataHandlers'
+import { Timestamp } from "firebase/firestore";
 
-export default function EntriesListWithEmoji({rawData}) {
-  console.log(rawData)
-  const renderItemEmoji = (props) => (
-    <Icon {...props} name='person'/>
-  );
+import {CURRENCY_SYMBOL} from './costants'
 
-  const renderItemValue = (props) => (
-    <Text>+100,00 euro</Text>
-  );
-  const renderItem = ({ item, index }) => (
+function convertTimestampToShortDate(timestamp){
+  //TODO: Bug, not working as expected.
+  return timestamp.toDate().toLocaleDateString("en",{year:"2-digit",month:"2-digit", day:"4-digit"})
+}
+
+export default function EntriesListWithEmoji({monthlyData}) {
+  const renderItemEmoji = (emoji) => {
+    return(<View style={styles.emojiView}>
+      <Text style={styles.emoji}>{emoji}</Text>
+    </View>);
+  };
+
+  const renderItemValue = (value) => {
+    return <Text>{value}{CURRENCY_SYMBOL}</Text>;    
+  };
+
+
+  const renderItem = ({item, index}) => (
+    
     <ListItem
       title={item.notes}
-      description={item.date}
-      accessoryLeft={renderItemEmoji}
-      accessoryRight={renderItemValue}
+      description={convertTimestampToShortDate(item.date)}
+      accessoryLeft={() => renderItemEmoji(item.category)}
+      accessoryRight={() => renderItemValue(item.value)}
     />
   );
 
+  console.log(monthlyData);
   return (
     <List
-      data={rawData}
+      data={monthlyData}
       ItemSeparatorComponent={Divider}
       renderItem={renderItem}
-
     />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    maxHeight: 200,
+  emoji: {
+    fontSize: 30
   },
+  emojiView:{
+    //borderWidth: 2,
+    paddingHorizontal: 10
+  }
 });

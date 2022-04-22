@@ -7,7 +7,8 @@ export default function DatePicker({date, setDate, show, setShow}){
     const onChange = (event, selectedDate) => {
       const currentDate = selectedDate;
       setShow(false);
-      setDate(currentDate);
+      if(selectedDate)
+        setDate(currentDate);
     };
     
     return (

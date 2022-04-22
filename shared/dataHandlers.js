@@ -1,6 +1,6 @@
 
 
-// DATA HANDLERS 
+// DATA HANDLERS: ALCUNI OBSOLETI
 
 export function filterMonthly(yearlyData){
     var filteredDataObjects = []
